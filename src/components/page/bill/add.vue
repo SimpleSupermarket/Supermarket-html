@@ -3,14 +3,14 @@
         <el-form :model="formData" :rules="rules"
                  ref="form" label-width="100px"
                  style="width: 33%">
-            <el-form-item label="订单编号" prop="billName"  >
-                <el-input v-model="formData.billName"></el-input>
-            </el-form-item>
-            <el-form-item label="商品名称" prop="providerName">
+           <!-- <el-form-item label="商品名称" prop="providerName">
                 <el-input v-model="formData.providerName"></el-input>
-            </el-form-item>
-            <el-form-item label="商品单位" prop="billCom">
-                <el-input v-model="formData.billCom"></el-input>
+            </el-form-item>-->
+            <el-form-item label="商品">
+                <el-select v-model="formData.goodsId" placeholder="请选择商品">
+                    <el-option v-for="(goods,index) in goodsList" :label="goods.name"
+                               :value="provider.id" :key="index"></el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="商品数量" prop="billNum">
                 <el-input v-model="formData.billNum"></el-input>
