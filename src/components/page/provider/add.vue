@@ -6,11 +6,11 @@
             <el-form-item label="供应商编号" prop="providerId"  >
                 <el-input v-model="formData.productId"></el-input>
             </el-form-item>
-            <el-form-item label="供应商名称" prop="providerName">
-                <el-input v-model="formData.providerName"></el-input>
+            <el-form-item label="供应商名称" prop="name">
+                <el-input v-model="formData.name"></el-input>
             </el-form-item>
-            <el-form-item label="联系人" prop="people">
-                <el-input v-model="formData.people"></el-input>
+            <el-form-item label="联系人" prop="contact">
+                <el-input v-model="formData.contact"></el-input>
             </el-form-item>
             <el-form-item label="联系电话" prop="phone">
                 <el-input v-model="formData.phone"></el-input>
@@ -22,8 +22,8 @@
                 <el-input v-model="formData.fax"></el-input>
             </el-form-item>
 
-            <el-form-item label="描述" prop="describe">
-                <el-input v-model="formData.describe"></el-input>
+            <el-form-item label="描述" prop="desc">
+                <el-input v-model="formData.desc"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>

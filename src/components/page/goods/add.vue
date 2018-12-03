@@ -3,11 +3,8 @@
         <el-form :model="formData" :rules="rules"
                  ref="form" label-width="100px"
                  style="width: 33%">
-            <el-form-item label="商品编号" prop="productId"  >
-                <el-input v-model="formData.productId"></el-input>
-            </el-form-item>
-            <el-form-item label="商品名称" prop="providerName">
-                <el-input v-model="formData.providerName"></el-input>
+            <el-form-item label="商品名称" prop="name">
+                <el-input v-model="formData.name"></el-input>
             </el-form-item>
             <el-form-item label="单价" prop="price">
                 <el-input v-model="formData.price"></el-input>
@@ -15,8 +12,8 @@
             <el-form-item label="单位" prop="unit">
                 <el-input v-model="formData.unit"></el-input>
             </el-form-item>
-            <el-form-item label="供应商编号">
-                <el-select v-model="formData.providerId" placeholder="供应商编号">
+            <el-form-item label="供应商">
+                <el-select v-model="formData.providerId" placeholder="供应商">
                     <el-option v-for="(provider,index) in providerList" :label="provider.name"
                                :value="provider.id" :key="index"></el-option>
                 </el-select>
@@ -40,7 +37,7 @@
             return {
                 id:0,
                 rules: {
-                    productId: [
+                    name: [
                         {required: true, message: '商品编号不能为空'}
                     ]
                 },

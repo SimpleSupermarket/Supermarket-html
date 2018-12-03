@@ -3,28 +3,22 @@
         <el-form :model="formData" :rules="rules"
                  ref="form" label-width="100px"
                  style="width: 33%">
-           <!-- <el-form-item label="商品名称" prop="providerName">
-                <el-input v-model="formData.providerName"></el-input>
-            </el-form-item>-->
             <el-form-item label="商品">
                 <el-select v-model="formData.goodsId" placeholder="请选择商品">
                     <el-option v-for="(goods,index) in goodsList" :label="goods.name"
-                               :value="provider.id" :key="index"></el-option>
+                               :value="goods.id" :key="index"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="商品数量" prop="billNum">
-                <el-input v-model="formData.billNum"></el-input>
+            <el-form-item label="商品数量" prop="goodsCount">
+                <el-input v-model="formData.goodsCount"></el-input>
             </el-form-item>
-            <el-form-item label="供应商">
-                <el-select v-model="formData.providerId" placeholder="供应商">
-                    <el-option v-for="(provider,index) in providerList" :label="provider.name"
-                               :value="provider.id" :key="index"></el-option>
-                </el-select>
+            <el-form-item label="订单金额" prop="totalPrice">
+                <el-input v-model="formData.totalPrice"></el-input>
             </el-form-item>
-            <el-form-item label="是否付款" prop="zhifu">
-                <el-radio-group v-model="formData.zhifu">
-                    <el-radio-button value="1" label="已付款"></el-radio-button>
-                    <el-radio-button value="2" label="未付款"></el-radio-button>
+            <el-form-item label="是否付款" prop="isPayment">
+                <el-radio-group v-model="formData.isPayment">
+                    <el-radio-button value="2" label="已付款"></el-radio-button>
+                    <el-radio-button value="1" label="未付款"></el-radio-button>
                 </el-radio-group>
             </el-form-item>
             <el-form-item>
