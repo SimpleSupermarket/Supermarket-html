@@ -21,9 +21,12 @@ module.exports = {
             //     target: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
             //     changeOrigin: true
             // }   本地直接访问/login接口即可 无需跨域
-            '/user/*': {
-                target: 'http://172.16.0.84:8081',
-                changeOrigin: true
+            '/api/*': {
+                target: 'http://127.0.0.1:8089',
+                changeOrigin: true,
+                pathRewrite:{
+                    '/api':''
+                }
             },
             "/message/*": {
                 //target: 'http://172.20.0.41:8082',

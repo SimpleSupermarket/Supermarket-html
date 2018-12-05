@@ -10,7 +10,7 @@
             </el-button>
         </div>
         <!--用户-->
-        <table class="providerTable" cellpadding="0" cellspacing="0">
+        <table class="providerTable" cellpadding="0" cellspacing="0" ref="smbms_table">
             <tbody>
             <tr class="firstTr">
                 <th width="10%">用户编码</th>
@@ -40,25 +40,46 @@
             </template>
             </tbody>
         </table>
-
+        <div style="float: right">
+            <el-pagination
+                    background
+                    :page-size="condition.pageSize"
+                    :page-count="condition.sumPage"
+                    :current-page="condition.currPage"
+                    layout="prev, pager, next"
+                    :total="condition.count">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
 <script>
+    import { Loading } from 'element-ui';
     export default {
         name: "user",
         data() {
             return {
-                list: [
-                    {
-                        id: 1,
-                    }, {
-                        id: 2,
-                    }
-                ]
+                list: [],
+                condition: {
+                    pageSize: 0, //每页大小
+                    sumPage: 0,  //总页数
+                    currPage: 0, //当前页
+                    count: 0    //总记录数
+                }
             }
         },
+        activated() {
+            this.search();
+        },
         methods: {
+            search() {
+                let table = this.$refs['smbms_table'];
+                let loadingTableData = Loading.service({target: table});
+                this.$axios.get("/user/list", this.condition).then(res => {
+                    this.list = res.data;
+                    loadingTableData.close();
+                })
+            },
             updata(id) {
                 this.$router.push({
                     path: '/user/update',

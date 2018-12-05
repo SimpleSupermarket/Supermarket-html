@@ -3,9 +3,6 @@
         <el-form :model="formData" :rules="rules"
                  ref="form" label-width="100px"
                  style="width: 33%">
-            <el-form-item label="供应商编号" prop="providerId"  >
-                <el-input v-model="formData.productId"></el-input>
-            </el-form-item>
             <el-form-item label="供应商名称" prop="name">
                 <el-input v-model="formData.name"></el-input>
             </el-form-item>
@@ -21,9 +18,8 @@
             <el-form-item label="传真" prop="fax">
                 <el-input v-model="formData.fax"></el-input>
             </el-form-item>
-
-            <el-form-item label="描述" prop="desc">
-                <el-input v-model="formData.desc"></el-input>
+            <el-form-item label="描述"  prop="desc">
+                <el-input type="textarea" v-model="formData.desc"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>

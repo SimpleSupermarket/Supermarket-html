@@ -23,24 +23,24 @@
             </el-button>
         </div>
 
-        <table class="providerTable" cellpadding="0" cellspacing="0">
+        <table class="providerTable" cellpadding="0" cellspacing="0" ref="smbms_table">
             <tr class="firstTr">
                 <th width="10%">账单编码</th>
                 <th width="20%">商品名称</th>
-                <th width="10%">供应商</th>
+                <th width="10%">商品数量</th>
                 <th width="10%">账单金额</th>
                 <th width="10%">是否付款</th>
                 <th width="10%">创建时间</th>
                 <th width="30%">操作</th>
             </tr>
-            <template  v-for="(bill,index) in list">
+            <template v-for="(bill,index) in list">
                 <tr>
-                    <td>213</td>
-                    <td>123</td>
-                    <td>北京市粮油总公司</td>
-                    <td>22.00</td>
-                    <td>未付款</td>
-                    <td>2015-11-12</td>
+                    <td>{{bill.code}}</td>
+                    <td>{{bill.goodsName}}</td>
+                    <td>{{bill.goodsCount}}</td>
+                    <td>{{bill.totalPrice}}</td>
+                    <td>{{bill.isPayment}}</td>
+                    <td>{{bill.creationDate}}</td>
                     <td>
                         <a href="javascript:void(0);" @click="updata(bill.id)"><img
                                 src="/static/img/xiugai.png" alt="修改" title="修改"></a>
@@ -51,24 +51,47 @@
                 </tr>
             </template>
         </table>
+        <div style="float: right">
+            <el-pagination
+                    background
+                    :page-size="condition.pageSize"
+                    :page-count="condition.sumPage"
+                    :current-page="condition.currPage"
+                    layout="prev, pager, next"
+                    :total="condition.count">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
 <script>
+    import {Loading} from 'element-ui';
+
     export default {
         name: "bill",
         data() {
             return {
-                list: [
-                    {
-                        id: 1,
-                    }, {
-                        id: 2,
-                    }
-                ]
+                list: [],
+                condition: {
+                    pageSize: 0, //每页大小
+                    sumPage: 0,  //总页数
+                    currPage: 0, //当前页
+                    count: 0    //总记录数
+                }
             }
         },
+        activated() {
+            this.search();
+        },
         methods: {
+            search() {
+                let table = this.$refs['smbms_table'];
+                let loadingTableData = Loading.service({target: table});
+                this.$axios.get("/bill/list", this.condition).then(res => {
+                    this.list = res.data.data;
+                    loadingTableData.close();
+                })
+            },
             updata(id) {
                 this.$router.push({
                     path: '/bill/update',
