@@ -3,7 +3,7 @@
         <div class="search">
             <span>商品名称：</span>
             <input type="text" placeholder="请输入商品的名称" v-model="condition.search.goodsName">
-            <el-button type="primary" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="search(1)">查询</el-button>
             <el-button type="primary" class="add"
                        @click="$router.push('/goods/add')">添加商品
             </el-button>
@@ -12,24 +12,22 @@
         <table class="providerTable" cellpadding="0" cellspacing="0" ref="smbms_table">
             <tbody>
             <tr class="firstTr">
-                <th width="10%">商品编码</th>
-                <th width="15%">商品名称</th>
+                <th width="16%">商品编码</th>
+                <th width="13%">商品名称</th>
                 <th width="10%">价格</th>
-                <th width="10%">单位</th>
-                <th width="10%">供应商</th>
+                <th width="19%">供应商</th>
                 <th width="10%">库存</th>
-                <th width="10%">创建时间</th>
-                <th width="25%">操作</th>
+                <th width="17%">创建时间</th>
+                <th width="15%">操作</th>
             </tr>
             <template v-for="(goods,index) in list">
                 <tr>
                     <td>{{goods.code}}</td>
                     <td>{{goods.name}}</td>
                     <td>{{goods.price}}</td>
-                    <td>{{goods.unit}}</td>
-                    <td>{{goods.provider}}</td>
-                    <td>{{goods.stock}}</td>
-                    <td>{{goods.creationDate}}</td>
+                    <td>{{goods.provider.name}}</td>
+                    <td>{{goods.stock}} {{goods.unit}}</td>
+                    <td>{{goods.creationdate}}</td>
                     <td>
                         <a href="javascript:void(0);" @click="updata(goods.id)"><img
                                 src="/static/img/xiugai.png" alt="修改" title="修改"></a>
@@ -44,6 +42,7 @@
         <div style="float: right">
             <el-pagination
                     background
+                    @current-change="search"
                     :page-size="condition.pageSize"
                     :page-count="condition.sumPage"
                     :current-page="condition.currPage"
@@ -75,11 +74,20 @@
             this.search();
         },
         methods: {
-            search() {
+            search(page) {
+                if(page){
+                    this.condition.currPage = page;
+                }
                 let table = this.$refs['smbms_table'];
                 let loadingTableData = Loading.service({target: table});
-                this.$axios.get("/goods/list", this.condition).then(res => {
-                    this.list = res.data;
+                this.$axios.get("/goods/list", {params:this.condition}).then(res => {
+                    if(res.data) {
+                        this.list = res.data.data;
+                        this.condition.pageSize = res.data.pageSize;
+                        this.condition.count = res.data.count;
+                        this.condition.sumPage = res.data.sumPage;
+                        this.condition.currPage = res.data.currPage;
+                    }
                     loadingTableData.close();
                 })
             },

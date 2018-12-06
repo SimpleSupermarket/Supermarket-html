@@ -4,7 +4,7 @@
         <div class="search">
             <span>用户名：</span>
             <input type="text" placeholder="请输入用户名" v-model="condition.search.name">
-            <el-button type="primary" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="search(1)">查询</el-button>
             <el-button type="primary" class="add"
                        @click="$router.push('/user/add')">添加商品
             </el-button>
@@ -19,14 +19,14 @@
                 <th width="10%">年龄</th>
                 <th width="10%">电话</th>
                 <th width="10%">用户类型</th>
-                <th width="30%">操作</th>
+                <th width="8%">操作</th>
             </tr>
             <template  v-for="(user,index) in list">
             <tr>
-                <td>hanlu</td>
-                <td>韩露</td>
-                <td>女</td>
-                <td>20</td>
+                <td>{{user.code}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.gender}}</td>
+                <td>{{user.age}}</td>
                 <td>15918230478</td>
                 <td>经理</td>
                 <td>
@@ -42,6 +42,7 @@
         </table>
         <div style="float: right">
             <el-pagination
+                    @current-change="search"
                     background
                     :page-size="condition.pageSize"
                     :page-count="condition.sumPage"
@@ -73,11 +74,20 @@
             this.search();
         },
         methods: {
-            search() {
+            search(page) {
+                if(page){
+                    this.condition.currPage = page;
+                }
                 let table = this.$refs['smbms_table'];
                 let loadingTableData = Loading.service({target: table});
-                this.$axios.get("/user/list", this.condition).then(res => {
-                    this.list = res.data;
+                this.$axios.get("/user/list", {params:this.condition}).then(res => {
+                    if(res.data) {
+                        this.list = res.data.data;
+                        this.condition.pageSize = res.data.pageSize;
+                        this.condition.count = res.data.count;
+                        this.condition.sumPage = res.data.sumPage;
+                        this.condition.currPage = res.data.currPage;
+                    }
                     loadingTableData.close();
                 })
             },

@@ -9,7 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css';    // 默认主题
 // http响应拦截器
 //统一的错误处理
 axios.interceptors.response.use(response => {
-    console.log(response.data)
+    console.log(response)
         return response;
     },
     error => {
@@ -37,6 +37,7 @@ axios.interceptors.response.use(response => {
 axios.interceptors.request.use(data => {
         // data.headers['Authorization'] = localStorage.getItem('token');
     data.url = '/api'+data.url
+    console.log(data)
         return data;
     },
     error => {

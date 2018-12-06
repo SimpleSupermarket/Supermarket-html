@@ -17,7 +17,7 @@
                 <option value="1">未付款</option>
             </select>
 
-            <el-button type="primary" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="search(1)">查询</el-button>
             <el-button type="primary" class="add"
                        @click="$router.push('/bill/add')">添加商品
             </el-button>
@@ -54,6 +54,7 @@
         </table>
         <div style="float: right">
             <el-pagination
+                    @current-change="search"
                     background
                     :page-size="condition.pageSize"
                     :page-count="condition.sumPage"
@@ -86,11 +87,20 @@
             this.search();
         },
         methods: {
-            search() {
+            search(page) {
+                if(page){
+                    this.condition.currPage = page;
+                }
                 let table = this.$refs['smbms_table'];
                 let loadingTableData = Loading.service({target: table});
-                this.$axios.get("/bill/list", this.condition).then(res => {
-                    this.list = res.data.data;
+                this.$axios.get("/bill/list", {params:this.condition}).then(res => {
+                    if(res.data) {
+                        this.list = res.data.data;
+                        this.condition.pageSize = res.data.pageSize;
+                        this.condition.count = res.data.count;
+                        this.condition.sumPage = res.data.sumPage;
+                        this.condition.currPage = res.data.currPage;
+                    }
                     loadingTableData.close();
                 })
             },

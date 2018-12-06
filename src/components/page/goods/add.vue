@@ -13,16 +13,20 @@
                 <el-input v-model="formData.unit"></el-input>
             </el-form-item>
             <el-form-item label="供应商">
-                <el-select v-model="formData.providerId" placeholder="供应商">
-                    <el-option v-for="(provider,index) in providerList" :label="provider.name"
-                               :value="provider.id" :key="index"></el-option>
+                <el-select v-model="formData.providerId" placeholder="请选择供应商"
+                           filterable  clearable remote :remote-method="getProviderList">
+                    <el-option
+                               v-for="(provider,index) in providerList"
+                               :value="provider.id" :key="index"
+                               :label="provider.name">
+                    </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="库存" prop="gstock">
                 <el-input v-model="formData.gstock"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
+                <el-button type="primary" @click="submitForm()">保存</el-button>
                 <!--  <el-button @click="resetForm('ruleForm')">重置</el-button>-->
                 <el-button type="primary" @click="$router.back()">返回</el-button>
             </el-form-item>
@@ -35,40 +39,49 @@
         name: "goods_add",
         data() {
             return {
-                id:0,
+                id: 0,
                 rules: {
                     name: [
                         {required: true, message: '商品编号不能为空'}
                     ]
                 },
                 formData: {},
-                providerList: [{
-                    name: '阿里',
-                    id: 1
-                }, {
-                    name: '腾讯',
-                    id: 2
-                }]
+                providerList: []
             }
         },
-        created(){
+        created() {
         },
         activated() {
-            if(this.$route.path.indexOf("/update")>1){
+            if (this.$route.path.indexOf("/update") > 1) {
                 this.$route.query.id = this.id;
-            }else{
+            } else {
                 this.id = 0;
             }
             this.init();
         },
         methods: {
-            init(){
+            submitForm(){
+                this.$axios.post("/goods",this.formData).then(res=>{
+                    if(res.data){
+                        this.$message({
+                            message: '添加成功',
+                            type: 'success'
+                        });
+                    }
+                });
+            },
+            init() {
                 //TODO初始化
-                if(this.id != 0){
-                    this.$axios.get("").then(res=>{
-                       this.formData = res.data;
+                if (this.id != 0) {
+                    this.$axios.get("").then(res => {
+                        this.formData = res.data;
                     });
                 }
+            },
+            getProviderList(providerName) {
+                this.$axios.get("/provider/list", {params: {search:{provider:providerName}}}).then(res => {
+                    this.providerList = res.data.data;
+                });
             }
         }
     }

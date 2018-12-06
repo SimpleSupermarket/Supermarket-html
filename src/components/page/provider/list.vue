@@ -3,7 +3,7 @@
         <div class="search">
             <span>供应商名称：</span>
             <input type="text" placeholder="请输入供应商的名称" v-model="condition.search.provider" />
-            <el-button type="primary" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="search(1)">查询</el-button>
             <el-button type="primary" class="add"
                        @click="$router.push('/provider/add')">添加供应商
             </el-button>
@@ -17,7 +17,7 @@
                 <th width="10%">联系电话</th>
                 <th width="10%">传真</th>
                 <th width="10%">创建时间</th>
-                <th width="30%">操作</th>
+                <th width="8%">操作</th>
             </tr>
             <template v-for="(provider,index) in list">
                 <tr>
@@ -40,6 +40,7 @@
         </table>
         <div style="float: right">
             <el-pagination
+                    @current-change="search"
                     background
                     :page-size="condition.pageSize"
                     :page-count="condition.sumPage"
@@ -71,11 +72,20 @@
             this.search();
         },
         methods: {
-            search() {
+            search(page) {
+                if(page){
+                    this.condition.currPage = page;
+                }
                 let table = this.$refs['smbms_table'];
                 let loadingTableData = Loading.service({target: table});
-                this.$axios.get("/provider/list", this.condition).then(res => {
-                    this.list = res.data.data;
+                this.$axios.get("/provider/list",{params:this.condition}).then(res => {
+                    if(res.data) {
+                        this.list = res.data.data;
+                        this.condition.pageSize = res.data.pageSize;
+                        this.condition.count = res.data.count;
+                        this.condition.sumPage = res.data.sumPage;
+                        this.condition.currPage = res.data.currPage;
+                    }
                     loadingTableData.close();
                 })
             },

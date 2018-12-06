@@ -13,6 +13,7 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
                 </div>
+                <p style="font-size:12px;line-height:30px;color:#999;color: red">{{messagee}}</p>
             </el-form>
         </div>
     </div>
@@ -22,9 +23,10 @@
     export default {
         data(){
             return{
+                messagee: '',
                 form:{
-                    username:'aaa',
-                    password:'111',
+                    username:'admin',
+                    password:'1234567',
                 },
                 rules: {
                     username: [
@@ -39,8 +41,29 @@
 
         methods:{
             submitForm(){
-                localStorage.setItem('ms_username', this.form.username);
-                this.$router.push('/');
+                let that = this;
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        let params = new URLSearchParams();
+                        params.append('username', that.form.username);
+                        params.append('password', that.form.password);
+                        this.$axios.post("/login", params).then((res) => {
+                            if (res.data) {
+                                localStorage.setItem('ms_username', this.form.username);
+                                this.$router.push('/');
+                            } else {
+                                that.messagee = "请检查用户名或密码"
+                            }
+                        }).catch((e) => {
+                            that.messagee = "请检查用户名或密码"
+                            console.log("登录异常")
+                        })
+
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
             }
         }
 
