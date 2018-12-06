@@ -3,7 +3,7 @@
 
         <div class="search">
             <span>用户名：</span>
-            <input type="text" placeholder="请输入用户名">
+            <input type="text" placeholder="请输入用户名" v-model="condition.search.name">
             <el-button type="primary" icon="el-icon-search">查询</el-button>
             <el-button type="primary" class="add"
                        @click="$router.push('/user/add')">添加商品
@@ -64,7 +64,8 @@
                     pageSize: 0, //每页大小
                     sumPage: 0,  //总页数
                     currPage: 0, //当前页
-                    count: 0    //总记录数
+                    count: 0 ,   //总记录数
+                    search: {}
                 }
             }
         },

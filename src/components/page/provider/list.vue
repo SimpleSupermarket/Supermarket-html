@@ -2,7 +2,7 @@
     <div>
         <div class="search">
             <span>供应商名称：</span>
-            <input type="text" placeholder="请输入供应商的名称"/>
+            <input type="text" placeholder="请输入供应商的名称" v-model="condition.search.provider" />
             <el-button type="primary" icon="el-icon-search">查询</el-button>
             <el-button type="primary" class="add"
                        @click="$router.push('/provider/add')">添加供应商
@@ -62,7 +62,8 @@
                     pageSize: 0, //每页大小
                     sumPage: 0,  //总页数
                     currPage: 0, //当前页
-                    count: 0    //总记录数
+                    count: 0 ,   //总记录数
+                    search: {}
                 }
             }
         },

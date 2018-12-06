@@ -2,19 +2,19 @@
     <div>
         <div class="search">
             <span>商品名称：</span>
-            <input type="text" placeholder="请输入商品的名称"/>
+            <input type="text" placeholder="请输入商品的名称" v-model="condition.search.goodsName"/>
             <span>供应商：</span>
-            <select name="tigong">
+            <select name="tigong" v-model="condition.search.provider">
                 <option value="">--请选择--</option>
                 <option value="">北京市粮油总公司</option>
                 <option value="">邯郸市五得利面粉厂</option>
             </select>
 
             <span>是否付款：</span>
-            <select name="fukuan">
+            <select name="fukuan" v-model="condition.search.isPayment" >
                 <option value="">--请选择--</option>
-                <option value="">已付款</option>
-                <option value="">未付款</option>
+                <option value="2">已付款</option>
+                <option value="1">未付款</option>
             </select>
 
             <el-button type="primary" icon="el-icon-search">查询</el-button>
@@ -31,7 +31,8 @@
                 <th width="10%">账单金额</th>
                 <th width="10%">是否付款</th>
                 <th width="10%">创建时间</th>
-                <th width="30%">操作</th>
+                <th width="10%">创建者</th>
+                <th width="20%">操作</th>
             </tr>
             <template v-for="(bill,index) in list">
                 <tr>
@@ -76,7 +77,8 @@
                     pageSize: 0, //每页大小
                     sumPage: 0,  //总页数
                     currPage: 0, //当前页
-                    count: 0    //总记录数
+                    count: 0,    //总记录数
+                    search: {}
                 }
             }
         },

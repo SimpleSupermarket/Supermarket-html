@@ -2,7 +2,7 @@
     <div>
         <div class="search">
             <span>商品名称：</span>
-            <input type="text" placeholder="请输入商品的名称">
+            <input type="text" placeholder="请输入商品的名称" v-model="condition.search.goodsName">
             <el-button type="primary" icon="el-icon-search">查询</el-button>
             <el-button type="primary" class="add"
                        @click="$router.push('/goods/add')">添加商品
@@ -13,21 +13,23 @@
             <tbody>
             <tr class="firstTr">
                 <th width="10%">商品编码</th>
-                <th width="20%">商品名称</th>
-                <th width="10%">联系人</th>
-                <th width="10%">联系电话</th>
-                <th width="10%">传真</th>
+                <th width="15%">商品名称</th>
+                <th width="10%">价格</th>
+                <th width="10%">单位</th>
+                <th width="10%">供应商</th>
+                <th width="10%">库存</th>
                 <th width="10%">创建时间</th>
-                <th width="30%">操作</th>
+                <th width="25%">操作</th>
             </tr>
             <template v-for="(goods,index) in list">
                 <tr>
-                    <td>PRO-CODE—001</td>
-                    <td>测试商品001</td>
-                    <td>韩露</td>
-                    <td>15918230478</td>
-                    <td>15918230478</td>
-                    <td>2015-11-12</td>
+                    <td>{{goods.code}}</td>
+                    <td>{{goods.name}}</td>
+                    <td>{{goods.price}}</td>
+                    <td>{{goods.unit}}</td>
+                    <td>{{goods.provider}}</td>
+                    <td>{{goods.stock}}</td>
+                    <td>{{goods.creationDate}}</td>
                     <td>
                         <a href="javascript:void(0);" @click="updata(goods.id)"><img
                                 src="/static/img/xiugai.png" alt="修改" title="修改"></a>
@@ -64,7 +66,8 @@
                     pageSize: 0, //每页大小
                     sumPage: 0,  //总页数
                     currPage: 0, //当前页
-                    count: 0    //总记录数
+                    count: 0,    //总记录数
+                    search: {}
                 }
             }
         },
