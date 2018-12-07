@@ -22,8 +22,8 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="库存" prop="gstock">
-                <el-input v-model="formData.gstock"></el-input>
+            <el-form-item label="库存" prop="stock">
+                <el-input v-model="formData.stock"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm()">保存</el-button>

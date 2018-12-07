@@ -56,14 +56,7 @@
                         {required: true, message: '用户编码不能为空'}
                     ]
                 },
-                formData: {},
-                providerList: [{
-                    name: '阿里',
-                    id: 1
-                }, {
-                    name: '腾讯',
-                    id: 2
-                }]
+                formData: {}
             }
         },
         created(){

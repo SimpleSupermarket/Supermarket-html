@@ -4,9 +4,13 @@
                  ref="form" label-width="100px"
                  style="width: 33%">
             <el-form-item label="商品">
-                <el-select v-model="formData.goodsId" placeholder="请选择商品">
-                    <el-option v-for="(goods,index) in goodsList" :label="goods.name"
-                               :value="goods.id" :key="index"></el-option>
+                <el-select v-model="formData.goodsId" placeholder="请选择商品"
+                           filterable  clearable remote :remote-method="getGoodsList">
+                    <el-option
+                            v-for="(goods,index) in goodsList"
+                            :value="goods.id" :key="index"
+                            :label="goods.name">
+                    </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="商品数量" prop="goodsCount">
@@ -69,6 +73,11 @@
                         this.formData = res.data;
                     });
                 }
+            },
+            getGoodsList(goodsName){
+                this.$axios.get("/goods/list", {params: {search:{goodsName:goodsName}}}).then(res => {
+                    this.goodsList = res.data.data;
+                });
             }
         }
     }
