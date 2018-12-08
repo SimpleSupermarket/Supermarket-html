@@ -54,7 +54,7 @@
 </template>
 
 <script>
-    import { Loading } from 'element-ui';
+    import {Loading} from 'element-ui';
 
     export default {
         name: "goods",
@@ -75,13 +75,13 @@
         },
         methods: {
             search(page) {
-                if(page){
+                if (page) {
                     this.condition.currPage = page;
                 }
                 let table = this.$refs['smbms_table'];
                 let loadingTableData = Loading.service({target: table});
-                this.$axios.get("/goods/list", {params:this.condition}).then(res => {
-                    if(res.data) {
+                this.$axios.get("/goods/list", {params: this.condition}).then(res => {
+                    if (res.data) {
                         this.list = res.data.data;
                         this.condition.pageSize = res.data.pageSize;
                         this.condition.count = res.data.count;

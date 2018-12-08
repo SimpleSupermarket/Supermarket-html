@@ -25,8 +25,8 @@
 
         <table class="providerTable" cellpadding="0" cellspacing="0" ref="smbms_table">
             <tr class="firstTr">
-                <th width="10%">账单编码</th>
-                <th width="20%">商品名称</th>
+                <th width="15%">账单编码</th>
+                <th width="15%">商品名称</th>
                 <th width="10%">商品数量</th>
                 <th width="10%">账单金额</th>
                 <th width="10%">是否付款</th>
@@ -37,11 +37,12 @@
             <template v-for="(bill,index) in list">
                 <tr>
                     <td>{{bill.code}}</td>
-                    <td>{{bill.goodsName}}</td>
-                    <td>{{bill.goodsCount}}</td>
-                    <td>{{bill.totalPrice}}</td>
-                    <td>{{bill.isPayment}}</td>
-                    <td>{{bill.creationDate}}</td>
+                    <td>{{bill.goods.name}}</td>
+                    <td>{{bill.goodscount}}</td>
+                    <td>{{bill.totalprice}}</td>
+                    <td>{{bill.ispayment}}</td>
+                    <td>{{bill.createdby.name}}</td>
+                    <td>{{bill.creationdate}}</td>
                     <td>
                         <a href="javascript:void(0);" @click="updata(bill.id)"><img
                                 src="/static/img/xiugai.png" alt="修改" title="修改"></a>

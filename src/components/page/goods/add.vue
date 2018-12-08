@@ -61,20 +61,46 @@
         },
         methods: {
             submitForm(){
-                this.$axios.post("/goods",this.formData).then(res=>{
-                    if(res.data){
-                        this.$message({
-                            message: '添加成功',
-                            type: 'success'
-                        });
-                    }
-                });
+                if (this.id == 0) {
+                    this.$axios.post("/goods", this.formData).then(res => {
+                        if (res.data) {
+                            this.$message({
+                                message: '添加成功',
+                                type: 'success'
+                            });
+                            this.$router.back();
+                        } else {
+                            this.$message({
+                                message: '添加失败',
+                                type: 'error'
+                            });
+                        }
+                    });
+                } else {
+                    this.$axios.patch("/goods", this.formData).then(res => {
+                        if (res.data) {
+                            this.$message({
+                                message: '修改成功',
+                                type: 'success'
+                            });
+                            this.$router.back();
+                        } else {
+                            this.$message({
+                                message: '修改失败',
+                                type: 'error'
+                            });
+                        }
+                    });
+                }
             },
             init() {
                 //TODO初始化
                 if (this.id != 0) {
-                    this.$axios.get("").then(res => {
+                    this.$axios.get("/goods", {params: {id: this.id}}).then(res => {
                         this.formData = res.data;
+                        this.$axios.get("/provider", {params: {id: res.data.providerId}}).then(res => {
+                            this.providerList = [res.data];
+                        });
                     });
                 }
             },

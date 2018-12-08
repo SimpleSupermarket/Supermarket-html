@@ -41,14 +41,7 @@
                         {required: true, message: '供应商编号不能为空'}
                     ]
                 },
-                formData: {},
-                providerList: [{
-                    name: '阿里',
-                    id: 1
-                }, {
-                    name: '腾讯',
-                    id: 2
-                }]
+                formData: {}
             }
         },
         created(){
@@ -62,10 +55,43 @@
             this.init();
         },
         methods: {
+            submitForm(){
+                if (this.id == 0) {
+                    this.$axios.post("/provider", this.formData).then(res => {
+                        if (res.data) {
+                            this.$message({
+                                message: '添加成功',
+                                type: 'success'
+                            });
+                            this.$router.back();
+                        } else {
+                            this.$message({
+                                message: '添加失败',
+                                type: 'error'
+                            });
+                        }
+                    });
+                } else {
+                    this.$axios.patch("/provider", this.formData).then(res => {
+                        if (res.data) {
+                            this.$message({
+                                message: '修改成功',
+                                type: 'success'
+                            });
+                            this.$router.back();
+                        } else {
+                            this.$message({
+                                message: '修改失败',
+                                type: 'error'
+                            });
+                        }
+                    });
+                }
+            },
             init(){
                 //TODO初始化
-                if(this.id != 0){
-                    this.$axios.get("").then(res=>{
+                if (this.id != 0) {
+                    this.$axios.get("/provider", {params: {id: this.id}}).then(res => {
                         this.formData = res.data;
                     });
                 }

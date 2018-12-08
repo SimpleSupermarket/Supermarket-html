@@ -20,7 +20,7 @@
                 </div>
                 <div class="providerAddBtn">
                     <!--<a href="#">保存</a>-->
-                    <input type="button" value="保存" onclick="history.back(-1)">
+                    <input type="button" value="保存" onclick="submit()">
                 </div>
             </form>
         </div>
@@ -29,7 +29,16 @@
 
 <script>
     export default {
-        name: "repassword"
+        name: "repassword",
+        methods:{
+            submit(){
+                this.$message({
+                    message: '修改失败,密码不可修改',
+                    type: 'error'
+                });
+                this.$router.back();
+            }
+        }
     }
 </script>
 

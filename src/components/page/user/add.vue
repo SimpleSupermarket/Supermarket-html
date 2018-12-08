@@ -57,7 +57,8 @@
                         {required: true, message: '用户编码不能为空'}
                     ]
                 },
-                formData: {}
+                formData: {},
+                roles:[]
             }
         },
         created() {
@@ -71,13 +72,52 @@
             this.init();
         },
         methods: {
+            submitForm(){
+                if (this.id == 0) {
+                    this.$axios.post("/user", this.formData).then(res => {
+                        if (res.data) {
+                            this.$message({
+                                message: '添加成功',
+                                type: 'success'
+                            });
+                            this.$router.back();
+                        } else {
+                            this.$message({
+                                message: '添加失败',
+                                type: 'error'
+                            });
+                        }
+                    });
+                } else {
+                    this.$axios.patch("/user", this.formData).then(res => {
+                        if (res.data) {
+                            this.$message({
+                                message: '修改成功',
+                                type: 'success'
+                            });
+                            this.$router.back();
+                        } else {
+                            this.$message({
+                                message: '修改失败',
+                                type: 'error'
+                            });
+                        }
+                    });
+                }
+            },
             init() {
+                this.getGoodsList();
                 //TODO初始化
                 if (this.id != 0) {
-                    this.$axios.get("").then(res => {
+                    this.$axios.get("/user", {params: {id: this.id}}).then(res => {
                         this.formData = res.data;
                     });
                 }
+            },
+            getGoodsList(goodsName) {
+                this.$axios.get("/role/list").then(res => {
+                    this.roles = res.data.data;
+                });
             }
         }
     }
