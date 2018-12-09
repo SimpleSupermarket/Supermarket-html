@@ -86,7 +86,7 @@
         },
         activated() {
             if (this.$route.path.indexOf("/update") > 1) {
-                this.$route.query.id = this.id;
+                this.id = this.$route.query.id ;
             } else {
                 this.id = 0;
             }
@@ -137,7 +137,7 @@
             },
             init() {
                 //TODO初始化
-                if (this.id != 0) {
+                if (this.id && this.id != 0) {
                     this.$axios.get("/goods", {params: {id: this.id}}).then(res => {
                         this.formData = res.data;
                         this.$axios.get("/provider", {params: {id: res.data.providerId}}).then(res => {

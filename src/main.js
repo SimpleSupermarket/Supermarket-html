@@ -15,8 +15,9 @@ axios.interceptors.response.use(response => {
     error => {
         if (error.response.status == 401) {
             localStorage.removeItem('ms_username');
-            this.$router.push('/login');
-            window.href="/#/login";
+            //this.$router.push('/login');
+            window.location.href="/#/login";
+
         } else if (error.response.status >= 500) {
             Vue.prototype.$message({
                 showClose: true,

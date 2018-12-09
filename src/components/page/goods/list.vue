@@ -12,8 +12,8 @@
         <table class="providerTable" cellpadding="0" cellspacing="0" ref="smbms_table">
             <tbody>
             <tr class="firstTr">
-                <th width="16%">商品编码</th>
-                <th width="13%">商品名称</th>
+                <th width="20%">商品编码</th>
+                <th width="10%">商品名称</th>
                 <th width="10%">价格</th>
                 <th width="19%">供应商</th>
                 <th width="10%">库存</th>

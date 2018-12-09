@@ -19,7 +19,7 @@
                 <el-input v-model="formData.fax"></el-input>
             </el-form-item>
             <el-form-item label="描述" prop="desc">
-                <el-input type="textarea" v-model="formData.desc"></el-input>
+                <el-input type="textarea"  :autosize="{ minRows: 3, maxRows: 15}" v-model="formData.desc"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
@@ -46,18 +46,19 @@
                         {min: 1, max: 25, message: '长度在 1 到 5 个字符', trigger: 'blur'}
                     ],
                     phone: [
-                        {required: true, message: '请输入联系人电话'},
                         {
                             validator: (rule, value, callback) => {
-                                if (value != "" && (/^1[34578]d{9}$/).test(value) == true) {
+                                console.log(value)
+                                console.log((/^1[34578]d{9}$/).test(value))
+                                if ( (/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/).test(value)) {
                                     callback();
-                                } else if (value != "" && (/^8d{7}$/).test(value) == true) {
+                                } else if ( (/^0\d{2,3}-?\d{7,8}$/).test(value)) {
                                     callback();
                                 } else {
                                     callback(new Error("电话号格式错误"));
                                 }
                             },
-                            trigger: 'change'
+                            trigger: 'blur'
                         }
                     ],
                     address:[
@@ -71,7 +72,7 @@
         },
         activated() {
             if (this.$route.path.indexOf("/update") > 1) {
-                this.$route.query.id = this.id;
+                this.id = this.$route.query.id ;
             } else {
                 this.id = 0;
             }
@@ -122,7 +123,7 @@
             },
             init() {
                 //TODO初始化
-                if (this.id != 0) {
+                if (this.id && this.id != 0) {
                     this.$axios.get("/provider", {params: {id: this.id}}).then(res => {
                         this.formData = res.data;
                     });

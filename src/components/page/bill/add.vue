@@ -128,7 +128,7 @@
             },
             init() {
                 //TODO初始化
-                if (this.id != 0) {
+                if (this.id && this.id != 0) {
                     this.$axios.get("/bill", {params: {id: this.id}}).then(res => {
                         this.formData = res.data;
                         this.$axios.get("/goods", {params: {id: res.data.goodsId}}).then(res => {

@@ -11,8 +11,8 @@
         <table class="providerTable" cellpadding="0" cellspacing="0" ref="smbms_table">
             <tbody>
             <tr class="firstTr">
-                <th width="10%">供应商编码</th>
-                <th width="20%">供应商名称</th>
+                <th width="20%">供应商编码</th>
+                <th width="15%">供应商名称</th>
                 <th width="10%">联系人</th>
                 <th width="10%">联系电话</th>
                 <th width="10%">传真</th>

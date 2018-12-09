@@ -13,8 +13,8 @@
         <table class="providerTable" cellpadding="0" cellspacing="0" ref="smbms_table">
             <tbody>
             <tr class="firstTr">
-                <th width="10%">用户编码</th>
-                <th width="20%">用户名称</th>
+                <th width="10%">用户名</th>
+                <th width="20%">姓名</th>
                 <th width="10%">性别</th>
                 <th width="10%">年龄</th>
                 <th width="10%">电话</th>
