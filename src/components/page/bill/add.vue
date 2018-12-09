@@ -3,7 +3,7 @@
         <el-form :model="formData" :rules="rules"
                  ref="form" label-width="100px"
                  style="width: 33%">
-            <el-form-item label="商品">
+            <el-form-item label="商品" prop="goodsId">
                 <el-select v-model="formData.goodsId" placeholder="请选择商品"
                            filterable clearable remote :remote-method="getGoodsList">
                     <el-option
@@ -43,6 +43,28 @@
                 rules: {
                     billName: [
                         {required: true, message: '订单号不能为空'}
+                    ],
+                    goodsId: [
+                        {required: true, message: '请选择商品'}
+                    ],
+                    goodsCount: [
+                        {type: 'number', required: true, message: '商品数量', trigger: 'change'}
+                    ],
+                    totalPrice:[
+                        {required: true, message: '请填写订单金额'},
+                        {
+                            validator: (rule, value, callback) => {
+                                if (value != "" && (/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/).test(value) == false) {
+                                    callback(new Error("金额无效，请输入数字"));
+                                } else {
+                                    callback();
+                                }
+                            },
+                            trigger: 'change'
+                        }
+                    ],
+                    isPayment:[
+                        {required: true, message: '请选择是否支付'}
                     ]
                 },
                 formData: {},
@@ -63,6 +85,15 @@
         },
         methods: {
             submitForm() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.submissionServer();
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            submissionServer() {
                 if (this.id == 0) {
                     this.$axios.post("/bill", this.formData).then(res => {
                         if (res.data) {

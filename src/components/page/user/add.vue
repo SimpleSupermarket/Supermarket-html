@@ -3,7 +3,7 @@
         <el-form :model="formData" :rules="rules"
                  ref="form" label-width="100px"
                  style="width: 33%">
-            <el-form-item label="用户名" prop="code">
+            <el-form-item label="用户名登录名" prop="code">
                 <el-input v-model="formData.code"></el-input>
             </el-form-item>
             <el-form-item label="姓名" prop="name">
@@ -53,9 +53,56 @@
             return {
                 id: 0,
                 rules: {
-                    userId: [
-                        {required: true, message: '用户编码不能为空'}
-                    ]
+                    code: [
+                        {required: true, message: '请输入用户登录名'},
+                        {
+                            validator: (rule, value, callback) => {
+                                if (value == null || value ==undefined || value.length < 5) {
+                                    callback(new Error("用户名无效，请重新输入"));
+                                } else {
+                                    callback();
+                                }
+                            }
+                        }
+                    ], name: [
+                        {required: true, message: '请输入姓名'},
+                        {min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur'}
+                    ], password: [
+                        {required: true, message: '密码不可为空'},
+                        {min: 5, max: 15, message: '长度在 1 到 15 个字符', trigger: 'blur'}
+                    ], rePassword: [
+                        {
+                            validator: (rule, value, callback) => {
+                                if (value != this.formData.password) {
+                                    callback(new Error("两次输入密码不一致"));
+                                } else {
+                                    callback();
+                                }
+                            },
+                            trigger: 'blur'
+                        }
+                    ], gender: [
+                        {required: true, message: '请选择性别'}
+                    ], birthday: [
+                        {required: true, message: '选择生日'}
+                    ], phone: [
+                        {required: true, message: '请输入电话号码'},
+                        {
+                            validator: (rule, value, callback) => {
+                                if (value != "" && (/^1[34578]d{9}$/).test(value) == true) {
+                                    callback();
+                                } else if (value != "" && (/^8d{7}$/).test(value) == true) {
+                                    callback();
+                                } else {
+                                    callback(new Error("电话号格式错误"));
+                                }
+                            },
+                            trigger: 'change'
+                        }
+                    ],
+                    roleId: [
+                        {required: true, message: '请选择用户类型'}
+                    ],
                 },
                 formData: {},
                 roles:[]
@@ -72,7 +119,16 @@
             this.init();
         },
         methods: {
-            submitForm(){
+            submitForm() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.submissionServer();
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            submissionServer() {
                 if (this.id == 0) {
                     this.$axios.post("/user", this.formData).then(res => {
                         if (res.data) {

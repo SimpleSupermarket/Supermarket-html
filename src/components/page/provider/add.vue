@@ -18,7 +18,7 @@
             <el-form-item label="传真" prop="fax">
                 <el-input v-model="formData.fax"></el-input>
             </el-form-item>
-            <el-form-item label="描述"  prop="desc">
+            <el-form-item label="描述" prop="desc">
                 <el-input type="textarea" v-model="formData.desc"></el-input>
             </el-form-item>
             <el-form-item>
@@ -35,27 +35,59 @@
         name: "goods_add",
         data() {
             return {
-                id:0,
+                id: 0,
                 rules: {
                     providerId: [
-                        {required: true, message: '供应商编号不能为空'}
-                    ]
+                        {required: true, message: '请输入供应商名称'},
+                        {min: 1, max: 25, message: '长度在 1 到 25 个字符', trigger: 'blur'}
+                    ],
+                    contact: [
+                        {required: true, message: '请输入联系人姓名'},
+                        {min: 1, max: 25, message: '长度在 1 到 5 个字符', trigger: 'blur'}
+                    ],
+                    phone: [
+                        {required: true, message: '请输入联系人电话'},
+                        {
+                            validator: (rule, value, callback) => {
+                                if (value != "" && (/^1[34578]d{9}$/).test(value) == true) {
+                                    callback();
+                                } else if (value != "" && (/^8d{7}$/).test(value) == true) {
+                                    callback();
+                                } else {
+                                    callback(new Error("电话号格式错误"));
+                                }
+                            },
+                            trigger: 'change'
+                        }
+                    ],
+                    address:[
+                        {required: true, message: '请输入地址'},
+                    ],
                 },
                 formData: {}
             }
         },
-        created(){
+        created() {
         },
         activated() {
-            if(this.$route.path.indexOf("/update")>1){
+            if (this.$route.path.indexOf("/update") > 1) {
                 this.$route.query.id = this.id;
-            }else{
+            } else {
                 this.id = 0;
             }
             this.init();
         },
         methods: {
-            submitForm(){
+            submitForm() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.submissionServer();
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            submissionServer() {
                 if (this.id == 0) {
                     this.$axios.post("/provider", this.formData).then(res => {
                         if (res.data) {
@@ -88,7 +120,7 @@
                     });
                 }
             },
-            init(){
+            init() {
                 //TODO初始化
                 if (this.id != 0) {
                     this.$axios.get("/provider", {params: {id: this.id}}).then(res => {

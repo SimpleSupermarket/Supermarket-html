@@ -12,13 +12,13 @@
             <el-form-item label="单位" prop="unit">
                 <el-input v-model="formData.unit"></el-input>
             </el-form-item>
-            <el-form-item label="供应商">
+            <el-form-item label="供应商" prop="providerId">
                 <el-select v-model="formData.providerId" placeholder="请选择供应商"
-                           filterable  clearable remote :remote-method="getProviderList">
+                           filterable clearable remote :remote-method="getProviderList">
                     <el-option
-                               v-for="(provider,index) in providerList"
-                               :value="provider.id" :key="index"
-                               :label="provider.name">
+                            v-for="(provider,index) in providerList"
+                            :value="provider.id" :key="index"
+                            :label="provider.name">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -42,7 +42,40 @@
                 id: 0,
                 rules: {
                     name: [
-                        {required: true, message: '商品编号不能为空'}
+                        {required: true, message: '请填写商品名称'}
+                    ],
+                    price: [
+                        {required: true, message: '请填写商品价格'},
+                        {
+                            validator: (rule, value, callback) => {
+                                if (value != "" && (/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/).test(value) == false) {
+                                    callback(new Error("请填写有效价格"));
+                                } else {
+                                    callback();
+                                }
+                            },
+                            trigger: 'change'
+                        }
+                    ],
+                    unit: [
+                        {required: true, message: '请指定单位'},
+                        {min: 1, max: 25, message: '长度在 1 到 25 个字符', trigger: 'blur'}
+                    ],
+                    providerId: [
+                        {required: true, message: '请选择供应商'},
+                    ],
+                    stock: [
+                        {required: true, message: '请输入剩余库存'},
+                        {
+                            validator: (rule, value, callback) => {
+                                if (value != "" && (/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/).test(value) == false) {
+                                    callback(new Error("请填写大于0的数字"));
+                                } else {
+                                    callback();
+                                }
+                            },
+                            trigger: 'change'
+                        }
                     ]
                 },
                 formData: {},
@@ -60,7 +93,16 @@
             this.init();
         },
         methods: {
-            submitForm(){
+            submitForm() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.submissionServer();
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            submissionServer() {
                 if (this.id == 0) {
                     this.$axios.post("/goods", this.formData).then(res => {
                         if (res.data) {
@@ -105,7 +147,7 @@
                 }
             },
             getProviderList(providerName) {
-                this.$axios.get("/provider/list", {params: {search:{provider:providerName}}}).then(res => {
+                this.$axios.get("/provider/list", {params: {search: {provider: providerName}}}).then(res => {
                     this.providerList = res.data.data;
                 });
             }
