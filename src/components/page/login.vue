@@ -21,12 +21,12 @@
 
 <script>
     export default {
-        data(){
-            return{
+        data() {
+            return {
                 messagee: '',
-                form:{
-                    username:'admin',
-                    password:'1234567',
+                form: {
+                    username: 'admin',
+                    password: '1234567',
                 },
                 rules: {
                     username: [
@@ -39,8 +39,8 @@
             }
         },
 
-        methods:{
-            submitForm(){
+        methods: {
+            submitForm() {
                 let that = this;
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
@@ -71,15 +71,12 @@
 </script>
 
 <style scoped>
-    .login-wrap {/*
-        position: relative;*/
-       /* width: 100%;*/
+    .login-wrap {
         height: 100%;
         width: 100%;
-        margin: 0 0;
-        background-attachment: fixed;
-        background-repeat: repeat;
-        background: url(/static/img/login_bg.jpg) 0 0 fixed ;
+        margin: 0;
+        background-size: cover;
+        background-image: url(/static/img/login_bg.jpg);
     }
 
     .ms-title {
